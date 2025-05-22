@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KelasResource\Pages;
-use App\Filament\Resources\KelasResource\RelationManagers;
-use App\Models\Kelas;
+use App\Filament\Resources\JurusanResource\Pages;
+use App\Filament\Resources\JurusanResource\RelationManagers;
+use App\Models\Jurusan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class KelasResource extends Resource
+class JurusanResource extends Resource
 {
-    protected static ?string $model = Kelas::class;
+    protected static ?string $model = Jurusan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     public static function getNavigationBadge(): ?string
@@ -28,12 +28,9 @@ class KelasResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('kelas')
+                Forms\Components\TextInput::make('jurusan')
                     ->required()
                     ->unique(ignorable: fn($record) => $record),
-                Forms\Components\Select::make('jurusan')
-                    ->required()
-                    ->options(\App\Models\Jurusan::pluck('jurusan', 'jurusan')),
             ]);
     }
 
@@ -41,17 +38,13 @@ class KelasResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('kelas'),
                 Tables\Columns\TextColumn::make('jurusan'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('jurusan')
-                ->options(\App\Models\Jurusan::pluck('jurusan', 'jurusan')),
+                //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -70,9 +63,9 @@ class KelasResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListKelas::route('/'),
-            'create' => Pages\CreateKelas::route('/create'),
-            'edit' => Pages\EditKelas::route('/{record}/edit'),
+            'index' => Pages\ListJurusans::route('/'),
+            'create' => Pages\CreateJurusan::route('/create'),
+            'edit' => Pages\EditJurusan::route('/{record}/edit'),
         ];
     }
 }

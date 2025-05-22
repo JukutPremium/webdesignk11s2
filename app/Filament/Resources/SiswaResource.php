@@ -18,6 +18,11 @@ class SiswaResource extends Resource
     protected static ?string $model = Siswa::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
+
 
     public static function form(Form $form): Form
     {
@@ -25,7 +30,8 @@ class SiswaResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nis')
                     ->required()
-                    ->unique(ignorable:fn($record)=>$record),
+                    ->unique(ignorable:fn($record)=>$record)
+                    ->label('NIS'),
                 Forms\Components\TextInput::make('nama')
                     ->required(),
                 Forms\Components\TextInput::make('absen')
@@ -49,8 +55,6 @@ class SiswaResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('kelas')
                 ->options(\App\Models\Kelas::pluck('kelas', 'kelas')),
-                Tables\Filters\SelectFilter::make('absen')
-                ->options(Siswa::pluck('absen', 'id')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
